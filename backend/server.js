@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 
 const app = express();
 
-// FIX 1: Dynamic Port selection for Render environment binding
+// Dynamic Port selection for Render environment binding
 const PORT = process.env.PORT || 5000; 
 const JWT_SECRET = process.env.JWT_SECRET || "venom_secret_key_98765"; 
 
@@ -15,8 +15,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DB_PATH = path.join(__dirname, 'database.json');
 
-// FIX 2: Relaxed CORS configuration to allow Vercel origins cleanly
-app.use(cors({ origin: '*' }));
+// Full CORS Configuration + Headers Whitelisting
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Explicit Preflight Handler for OPTIONS Requests
+app.options('*', cors()); 
+
 app.use(express.json());
 
 // Helper to safely read database records
@@ -63,7 +71,7 @@ app.get('/api/players', (req, res) => {
   res.json(db.players || []);
 });
 
-// FIX 3: Expanded Auth route paths to capture both styles of requests cleanly
+// Expanded Auth route paths to capture both styles of requests cleanly
 app.post(['/api/auth', '/api/auth/login'], (req, res) => {
   const { username, password } = req.body;
   const db = readDatabase();
@@ -207,7 +215,7 @@ setInterval(() => {
   }
 }, 60000);
 
-// FIX 4: Bind network interface listener directly to global wildcard tracking address 0.0.0.0
+// Bind network interface listener directly to global tracking address 0.0.0.0
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Venom Service Engine active on port ${PORT}`);
 });
