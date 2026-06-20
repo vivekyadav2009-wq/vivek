@@ -1,6 +1,7 @@
 import './style.css';
 
-const API_URL = "http://localhost:5000/api";
+// FIX 1: Dynamic URL selection reading Vercel variables or falling back to local simulation
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 let originalPlayersState = []; 
 let players = [];
 let systemData = { testers: [], pendingApprovals: [], backups: [] };
@@ -52,7 +53,8 @@ async function fetchSystemData() {
   try {
     const token = sessionStorage.getItem('venomToken');
     if (!token || userRole !== 'owner') return;
-    const res = await fetch(`${API_URL}/admin/system`, { headers: { 'Authorization': token } });
+    // FIX 2A: Sending token formatted securely with standard Bearer syntax scheme
+    const res = await fetch(`${API_URL}/admin/system`, { headers: { 'Authorization': `Bearer ${token}` } });
     if (res.ok) {
       const data = await res.json();
       systemData = { testers: data.testers || [], pendingApprovals: data.pendingApprovals || [], backups: data.backups || [] };
@@ -66,8 +68,6 @@ function startLivePolling() {
   if (pollInterval) clearInterval(pollInterval);
   pollInterval = setInterval(async () => {
     if (currentView === 'admin' && userRole === 'owner') {
-      // FIX: If the user is currently typing inside an input box (like search, username, password), 
-      // skip the render update cycle so their text doesn't disappear.
       if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT')) {
         return; 
       }
@@ -401,7 +401,8 @@ async function submitMutationsToServer() {
   try {
     const res = await fetch(`${API_URL}/players/mutate`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': token || '' },
+      // FIX 2B: Added standard Bearer authorization packaging context here too
+      headers: { 'Content-Type': 'application/json', 'Authorization': token ? `Bearer ${token}` : '' },
       body: JSON.stringify({ players: players, description: patchDescription })
     });
     if (!res.ok) throw new Error();
@@ -411,7 +412,7 @@ async function submitMutationsToServer() {
     await fetchSystemData();
     render(); 
   } catch (err) { 
-    alert("Pipeline execution failed. Verify that your server process is active on port 5000."); 
+    alert("Pipeline execution failed. Verify that your server process is active."); 
   }
 }
 
@@ -613,19 +614,22 @@ async function createTesterProfile(e) {
   const token = sessionStorage.getItem('venomToken');
   const username = document.getElementById('testerUser').value.trim();
   const password = document.getElementById('testerPass').value.trim();
-  const res = await fetch(`${API_URL}/admin/action`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token || '' }, body: JSON.stringify({ actionType: 'addTester', payload: { username, password } }) });
+  // FIX 2C: Wrapped token in standard Bearer format context
+  const res = await fetch(`${API_URL}/admin/action`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token ? `Bearer ${token}` : '' }, body: JSON.stringify({ actionType: 'addTester', payload: { username, password } }) });
   if (res.ok) { await fetchSystemData(); renderOnlyDynamicContainers(); } else alert((await res.json()).message);
 }
 
 async function removeTesterProfile(username) {
   const token = sessionStorage.getItem('venomToken');
-  const res = await fetch(`${API_URL}/admin/action`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token || '' }, body: JSON.stringify({ actionType: 'removeTester', payload: { username } }) });
+  // FIX 2D: Wrapped token in standard Bearer format context
+  const res = await fetch(`${API_URL}/admin/action`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token ? `Bearer ${token}` : '' }, body: JSON.stringify({ actionType: 'removeTester', payload: { username } }) });
   if (res.ok) { await fetchSystemData(); renderOnlyDynamicContainers(); }
 }
 
 async function handleQueueAction(actionType, id) {
   const token = sessionStorage.getItem('venomToken');
-  const res = await fetch(`${API_URL}/admin/action`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token || '' }, body: JSON.stringify({ actionType, payload: { id } }) });
+  // FIX 2E: Wrapped token in standard Bearer format context
+  const res = await fetch(`${API_URL}/admin/action`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': token ? `Bearer ${token}` : '' }, body: JSON.stringify({ actionType, payload: { id } }) });
   if (res.ok) { await fetchPlayers(); await fetchSystemData(); renderOnlyDynamicContainers(); }
 }
 
