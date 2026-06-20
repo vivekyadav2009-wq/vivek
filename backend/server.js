@@ -6,14 +6,17 @@ import { fileURLToPath } from 'url';
 import jwt from 'jsonwebtoken';
 
 const app = express();
-const PORT = 5000;
-const JWT_SECRET = "venom_secret_key_98765"; 
+
+// FIX 1: Dynamic Port selection for Render environment binding
+const PORT = process.env.PORT || 5000; 
+const JWT_SECRET = process.env.JWT_SECRET || "venom_secret_key_98765"; 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DB_PATH = path.join(__dirname, 'database.json');
 
-app.use(cors());
+// FIX 2: Relaxed CORS configuration to allow Vercel origins cleanly
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 // Helper to safely read database records
@@ -44,7 +47,7 @@ function writeDatabase(data) {
 
 // Middleware to authorize session requests securely
 function authenticateToken(req, res, next) {
-  const token = req.headers['authorization'];
+  const token = req.headers['authorization']?.split(' ')[1] || req.headers['authorization'];
   if (!token) return res.status(401).json({ message: "Access Token Required" });
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
@@ -60,8 +63,8 @@ app.get('/api/players', (req, res) => {
   res.json(db.players || []);
 });
 
-// Auth Route
-app.post('/api/auth', (req, res) => {
+// FIX 3: Expanded Auth route paths to capture both styles of requests cleanly
+app.post(['/api/auth', '/api/auth/login'], (req, res) => {
   const { username, password } = req.body;
   const db = readDatabase();
 
@@ -204,4 +207,7 @@ setInterval(() => {
   }
 }, 60000);
 
-app.listen(PORT, () => console.log(`Venom Service Engine active: http://localhost:${PORT}`));
+// FIX 4: Bind network interface listener directly to global wildcard tracking address 0.0.0.0
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Venom Service Engine active on port ${PORT}`);
+});
