@@ -1,0 +1,30 @@
+{
+  "players": [
+    {
+      "name": "ShallowX",
+      "tiers": {
+        "vanilla": "HT1",
+        "uhc": "HT1"
+      },
+      "points": 120
+    }
+  ],
+  "testers": [],
+  "pendingApprovals": [],
+  "backups": [
+    {
+      "id": "1781941763725",
+      "timestamp": 1781941763725,
+      "description": "Manual matrix patch save event.",
+      "state": [
+        {
+          "name": "ShallowX",
+          "tiers": {
+            "vanilla": "HT1"
+          },
+          "points": 60
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "venom-frontend",
+  "private": true,
+  "version": "4.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "vite": "^5.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0-alpha.1",
+    "tailwindcss": "^4.0.0-alpha.1"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "players": [
+    {
+      "name": "ShallowX",
+      "tiers": {
+        "vanilla": "LT1",
+        "uhc": "HT1",
+        "pot": "HT1",
+        "smp": "HT1"
+      },
+      "points": 225
+    }
+  ],
+  "description": "Modified [ShallowX] (SMP: None➔HT1)"
+}

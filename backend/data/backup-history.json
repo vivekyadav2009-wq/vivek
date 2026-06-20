@@ -1,0 +1,70 @@
+[
+  {
+    "id": "snap_1781928943571",
+    "timestamp": 1781928943571,
+    "description": "Rosters manual override modification by Owner",
+    "playerSnapshot": [
+      {
+        "name": "ShallowX",
+        "tiers": {
+          "vanilla": "LT1",
+          "uhc": "HT1",
+          "pot": "HT1"
+        },
+        "points": 165
+      }
+    ]
+  },
+  {
+    "id": "snap_1781929119296",
+    "timestamp": 1781929119296,
+    "description": "Rosters manual override modification by Owner",
+    "playerSnapshot": [
+      {
+        "name": "ShallowX",
+        "tiers": {
+          "vanilla": "LT1",
+          "uhc": "HT1",
+          "pot": "HT1"
+        },
+        "points": 165
+      }
+    ]
+  },
+  {
+    "id": "snap_1781929145754",
+    "timestamp": 1781929145754,
+    "description": "Rosters manual override modification by Owner",
+    "playerSnapshot": [
+      {
+        "name": "ShallowX",
+        "tiers": {
+          "vanilla": "LT1",
+          "uhc": "HT1",
+          "pot": "HT1"
+        },
+        "points": 165
+      }
+    ]
+  },
+  {
+    "id": "snap_1781929811835",
+    "timestamp": 1781929811835,
+    "description": "Rosters manual override modification by Owner",
+    "playerSnapshot": {
+      "players": [
+        {
+          "name": "ShallowX",
+          "tiers": {
+            "vanilla": "LT1",
+            "uhc": "HT1",
+            "pot": "HT1",
+            "smp": "HT1"
+          },
+          "points": 225
+        }
+      ],
+      "description": "Modified [ShallowX] (SMP: None➔HT1)"
+    }
+  }
+]

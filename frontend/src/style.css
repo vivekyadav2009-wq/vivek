@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+/* Base Layout Config */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Light Mode Defaults */
+body {
+  @apply bg-slate-50 text-slate-900 transition-colors duration-200;
+}
+
+.glass {
+  @apply bg-white/70 backdrop-blur-md border border-slate-200/60 shadow-sm transition-all duration-200;
+}
+
+/* Dark Mode Overrides (Controlled by root .dark class) */
+.dark body {
+  @apply bg-slate-950 text-slate-50;
+}
+
+.dark .glass {
+  @apply bg-slate-900/70 backdrop-blur-md border border-slate-800/60 shadow-md;
+}
+
+/* Minimalist Scrollbar adjustments */
+.scrollbar-minimal::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-minimal::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-minimal::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-700 rounded;
+}
